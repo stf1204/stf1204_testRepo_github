@@ -1,7 +1,9 @@
-package com.atguigu;
+package com.atguigu.phoenix;
+
 
 import java.sql.*;
 import java.util.Properties;
+
 /**
  * @ClassName: PhoenixFactClient
  * @PACKAGE: com.atguigu
@@ -42,4 +44,3 @@ public class PhoenixFactClient {
         connection.close();
     }
 }
-

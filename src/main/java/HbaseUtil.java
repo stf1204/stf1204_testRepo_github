@@ -59,44 +59,7 @@ import java.io.IOException;
 public class HbaseUtil {
 
     /**
-     * 遍历result结果
-     */
-    public void parseResult(Result result) {
-        Cell[] cells = result.rawCells();
-        for (Cell cell : cells) {
-            System.out.println("rowKey = " + Bytes.toString(CellUtil.cloneRow(cell)));
-            System.out.println("cf:cq =" + Bytes.toString(CellUtil.cloneFamily(cell)) + ":" + Bytes.toString(CellUtil.cloneQualifier(cell)));
-            System.out.println("value = " + Bytes.toString(CellUtil.cloneValue(cell)));
-        }
-    }
-
-    /**
-     * 封装Put对象的方法
-     * Put 表名, rowKey，cf：cq，value
-     */
-    public Put getPut(String rowKey, String cf, String cq, String value) {
-        Put put = new Put(Bytes.toBytes(rowKey));
-        put.addColumn(Bytes.toBytes(cf), Bytes.toBytes(cq), Bytes.toBytes(value));
-        return put;
-    }
-
-
-    /**
-     * 获取表名对象
-     */
-    public Table getTable(String tableName) throws IOException {
-
-        //StringUtils: commons.lang
-        if (StringUtils.isBlank(tableName)) {
-            System.err.println("表名非法!");
-            throw new RuntimeException("表明非法！");
-        }
-        Table table = connection.getTable(TableName.valueOf(tableName));
-        return table;
-    }
-
-    /**
-     * 成员变量
+     * 将链接对象设置为成员变量
      */
     Connection connection = null;
 
@@ -113,12 +76,46 @@ public class HbaseUtil {
             throw new RuntimeException(e);
         }
     }
-  /*
+
+
     /**
-     * 获取Hbase,Connection
-     * @return
-    public Connection getConn() {
-    }*/
+     * 遍历result结果，并打印结果
+     */
+    public void parseResult(Result result) {
+        // rawCells 获取result的所有属性
+        Cell[] cells = result.rawCells();
+        for (Cell cell : cells) {
+            System.out.println("rowKey = " + Bytes.toString(CellUtil.cloneRow(cell)));
+            System.out.println("cf:cq =" + Bytes.toString(CellUtil.cloneFamily(cell)) + ":" + Bytes.toString(CellUtil.cloneQualifier(cell)));
+            System.out.println("value = " + Bytes.toString(CellUtil.cloneValue(cell)));
+        }
+    }
+
+    /**
+     * 封装往表中Put数据的Put对象方法
+     * Put 表名, rowKey，cf：cq，value
+     */
+    public Put getPut(String rowKey, String cf, String cq, String value) {
+        Put put = new Put(Bytes.toBytes(rowKey));
+        put.addColumn(Bytes.toBytes(cf), Bytes.toBytes(cq), Bytes.toBytes(value));
+        return put;
+    }
+
+
+    /**
+     * 获取需要操作的表的表对象
+     */
+    public Table getTable(String tableName) throws IOException {
+
+        //StringUtils: commons.lang
+        // isBlank会判断表是否为null，“”，/t等。
+        if (StringUtils.isBlank(tableName)) {
+            System.err.println("表名非法!");
+            throw new RuntimeException("表名非法！");
+        }
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        return table;
+    }
 
 
     /**

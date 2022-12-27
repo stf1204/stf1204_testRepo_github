@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SparkStreamingTest.iml" filepath="$PROJECT_DIR$/SparkStreamingTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redisTest.iml" filepath="$PROJECT_DIR$/redisTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spark-01/spark-01.iml" filepath="$PROJECT_DIR$/spark-01/spark-01.iml" />
+    </modules>
+  </component>
+</project>

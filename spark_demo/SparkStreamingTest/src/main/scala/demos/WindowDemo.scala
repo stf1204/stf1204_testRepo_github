@@ -1,3 +1,5 @@
+package demos
+
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
@@ -7,42 +9,32 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
- * @ClassName: TransformDemo
- * @PACKAGE:
- * @Author: stf
- * @Date: 2022/12/27 - 11:12
- * @Description:
- * @Version: v1.0
+ * 再SparkStreaming中有三个与时间操作有关的函数::
  *
- */
-
-/**
- *  再SparkStreaming中有三个与时间操作有关的函数::
+ * batchDuration：Duration    将多长时间消费的数据封装为一个RDD
+ * 一个批次的采集时间间隔
+ * window：       Duration    要计算的时间范围
  *
- *      batchDuration：Duration    将多长时间消费的数据封装为一个RDD
- *                                 一个批次的采集时间间隔
- *      window：       Duration    要计算的时间范围
+ * slide：        Duration    多久提交一次Job运算
  *
- *      slide：        Duration    多久提交一次Job运算
+ * batchDuration 在构造 StreamingContext 时候必须指定。
+ * 默认情况下，window 和 slide 等于 batchDuration
+ * 今天上午的所有操作都是 消费10s的数据作为一个batch，每间隔10s，提交一个job，每个job算 过去10s的数据。
  *
- *      batchDuration 在构造 StreamingContext 时候必须指定。
- *            默认情况下，window 和 slide 等于 batchDuration
- *            今天上午的所有操作都是 消费10s的数据作为一个batch，每间隔10s，提交一个job，每个job算 过去10s的数据。
+ * --------------------------------------------------------------------
  *
- *  --------------------------------------------------------------------
- *
- *  在获取流的任意位置 调用window()
+ * 在获取流的任意位置 调用window()
  *
  *
- *  --------------------------------------------------------------------
+ * --------------------------------------------------------------------
  *
- *   object not serializable(class: org.apache.kafka.clients.consumer.ConsumerRecord)
- *   解决办法：
- *          方法一：
- *                不要在获取了初始的ds：InputStream[ConsumerRecord]之后立即调用window
- *                而应该先取出 ConsumerRecord中的value，之后再window
- *          方法二：
- *                将ConsumerRecord使用kryo，进行序列化
+ * object not serializable(class: org.apache.kafka.clients.consumer.ConsumerRecord)
+ * 解决办法：
+ * 方法一：
+ * 不要在获取了初始的ds：InputStream[ConsumerRecord]之后立即调用window
+ * 而应该先取出 ConsumerRecord中的value，之后再window
+ * 方法二：
+ * 将ConsumerRecord使用kryo，进行序列化
  */
 object WindowDemo {
   def main(args: Array[String]): Unit = {
@@ -65,7 +57,7 @@ object WindowDemo {
       PreferConsistent,
       Subscribe[String, String](topics, kafka)
     )
-//    (String, Int):(word,n)
+    //    (String, Int):(word,n)
     val ds1: DStream[(String, Int)] = ds.flatMap(words => words.value().split(" "))
       .map((_, 1))
       .reduceByKey(_ + _)

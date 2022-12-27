@@ -1,4 +1,3 @@
-import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -61,7 +60,6 @@ object WordCountDemo {
     val sparkContext = new SparkContext(sparkConf)
     val streamingContext = new StreamingContext(sparkContext, Seconds(10))
 */
-
 //    val streamingContext = new StreamingContext(sparkConf, Seconds(10))
 
     //① 创建StreamingContext
@@ -158,6 +156,7 @@ object WordCountDemo {
     val ds2:DStream[String] = ds1.flatMap(line => line.split(" "))
 
     val ds3: DStream[(String, Int)] = ds2.map(word => (word, 1)).reduceByKey(_ + _)
+
 
     // 输出，在屏幕打印，默认print()只打印前10行
     ds3.print(1000)

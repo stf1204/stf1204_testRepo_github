@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="atguigu@hive">
+  <database-model serializer="dbm" dbms="HIVE" family-id="HIVE" format-version="4.15">
+    <root id="1">
+      <ServerVersion>1.2.2</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="atguigu">
+      <Comment>databse_commit</Comment>
+      <Current>1</Current>
+      <Visible>1</Visible>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu</Location>
+    </schema>
+    <schema id="3" parent="1" name="badou">
+      <Location>hdfs://master:9000/user/hive/warehouse/badou.db</Location>
+    </schema>
+    <schema id="4" parent="1" name="badou_warehouse">
+      <Location>hdfs://master:9000/user/hive/warehouse/badou_warehouse.db</Location>
+    </schema>
+    <schema id="5" parent="1" name="default">
+      <Comment>Default Hive database</Comment>
+      <Location>hdfs://master:9000/user/hive/warehouse</Location>
+    </schema>
+    <role id="6" parent="1" name="admin"/>
+    <role id="7" parent="1" name="public"/>
+    <table id="8" parent="2" name="address">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+2
+rawDataSize
+43
+totalSize
+45
+transient_lastDdlTime
+1666929877</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/address</Location>
+    </table>
+    <table id="9" parent="2" name="business">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+totalSize
+266
+transient_lastDdlTime
+1667034120</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/business</Location>
+    </table>
+    <table id="10" parent="2" name="countries">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+6
+rawDataSize
+45
+totalSize
+51
+transient_lastDdlTime
+1667045992</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/countries</Location>
+    </table>
+    <table id="11" parent="2" name="course">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+3
+rawDataSize
+24
+totalSize
+27
+transient_lastDdlTime
+1667196045</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/course</Location>
+    </table>
+    <table id="12" parent="2" name="dept">
+      <Comment>��h</Comment>
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+4
+rawDataSize
+68
+totalSize
+72
+transient_lastDdlTime
+1666925123</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/dept</Location>
+    </table>
+    <table id="13" parent="2" name="dept_partition">
+      <Properties>transient_lastDdlTime
+1667140972</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/dept_partition</Location>
+    </table>
+    <table id="14" parent="2" name="dept_partition_double">
+      <Properties>transient_lastDdlTime
+1667142501</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/dept_partition_double</Location>
+    </table>
+    <table id="15" parent="2" name="dy_emp">
+      <Properties>transient_lastDdlTime
+1667143337</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/dy_emp</Location>
+    </table>
+    <table id="16" parent="2" name="emp">
+      <Comment>X�h</Comment>
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+14
+rawDataSize
+386
+totalSize
+400
+transient_lastDdlTime
+1666949253</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/emp</Location>
+    </table>
+    <table id="17" parent="2" name="emp_sex"/>
+    <table id="18" parent="2" name="employee">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+4
+rawDataSize
+56
+totalSize
+60
+transient_lastDdlTime
+1666930843</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/employee</Location>
+    </table>
+    <table id="19" parent="2" name="location">
+      <Comment>��Mnh</Comment>
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+totalSize
+36
+transient_lastDdlTime
+1666926075</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/location</Location>
+    </table>
+    <table id="20" parent="2" name="movie_info">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+totalSize
+133
+transient_lastDdlTime
+1666954439</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/movie_info</Location>
+    </table>
+    <table id="21" parent="2" name="person">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+3
+rawDataSize
+34
+totalSize
+37
+transient_lastDdlTime
+1666929790</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/person</Location>
+    </table>
+    <table id="22" parent="2" name="person_info">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+totalSize
+123
+transient_lastDdlTime
+1666951050</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/person_info</Location>
+    </table>
+    <table id="23" parent="2" name="sales"/>
+    <table id="24" parent="2" name="score">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+18
+rawDataSize
+144
+totalSize
+162
+transient_lastDdlTime
+1667196087</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/score</Location>
+    </table>
+    <table id="25" parent="2" name="stu_buck">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+4
+numRows
+16
+rawDataSize
+215
+totalSize
+231
+transient_lastDdlTime
+1667184360</Properties>
+      <BucketsNum>4</BucketsNum>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/stu_buck</Location>
+    </table>
+    <table id="26" parent="2" name="stu_par_buck">
+      <Properties>transient_lastDdlTime
+1667184743</Properties>
+      <BucketsNum>4</BucketsNum>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/stu_par_buck</Location>
+    </table>
+    <table id="27" parent="2" name="student">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+8
+rawDataSize
+144
+totalSize
+152
+transient_lastDdlTime
+1667198874</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/student</Location>
+    </table>
+    <table id="28" parent="2" name="student1">
+      <Properties>COLUMN_STATS_ACCURATE
+false
+numFiles
+1
+numRows
+-1
+rawDataSize
+-1
+totalSize
+231
+transient_lastDdlTime
+1666856837</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/student1</Location>
+    </table>
+    <table id="29" parent="2" name="student2">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+16
+rawDataSize
+215
+totalSize
+231
+transient_lastDdlTime
+1666799477</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/student2</Location>
+    </table>
+    <table id="30" parent="2" name="student3">
+      <Properties>transient_lastDdlTime
+1666799488</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/student3</Location>
+    </table>
+    <table id="31" parent="2" name="student_bak">
+      <Comment>f&#x1f;h</Comment>
+      <Properties>last_modified_by
+root
+last_modified_time
+1667195789
+transient_lastDdlTime
+1667195789</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/student_bak</Location>
+    </table>
+    <table id="32" parent="2" name="teacher">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+3
+rawDataSize
+15
+totalSize
+18
+transient_lastDdlTime
+1667196068</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/teacher</Location>
+    </table>
+    <table id="33" parent="2" name="teacher_bak">
+      <Properties>COLUMN_STATS_ACCURATE
+false
+EXTERNAL
+FALSE
+last_modified_by
+root
+last_modified_time
+1667195807
+numFiles
+0
+numRows
+-1
+rawDataSize
+-1
+totalSize
+0
+transient_lastDdlTime
+1667195807</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/teacher_bak</Location>
+    </table>
+    <table id="34" parent="2" name="test_type">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+totalSize
+156
+transient_lastDdlTime
+1666874805</Properties>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/test_type</Location>
+    </table>
+    <table id="35" parent="2" name="weather">
+      <Properties>COLUMN_STATS_ACCURATE
+true
+numFiles
+1
+numRows
+17
+rawDataSize
+251
+totalSize
+268
+transient_lastDdlTime
+1667046223</Properties>
+      <RowFormatSerde>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</RowFormatSerde>
+      <InputFormat>org.apache.hadoop.mapred.TextInputFormat</InputFormat>
+      <OutputFormat>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</OutputFormat>
+      <Location>hdfs://master:9000/user/hive/warehouse/atguigu/weather</Location>
+    </table>
+    <column id="36" parent="8" name="addressid">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="37" parent="8" name="personid">
+      <Position>2</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="38" parent="8" name="city">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="39" parent="8" name="state">
+      <Position>4</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="40" parent="9" name="name">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="41" parent="9" name="orderdate">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="42" parent="9" name="cost">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="43" parent="10" name="country_id">
+      <Position>1</Position>
+      <Comment>国家号</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="44" parent="10" name="country_name">
+      <Position>2</Position>
+      <Comment>国家名称</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="45" parent="11" name="c_id">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="46" parent="11" name="c_name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="47" parent="11" name="t_id">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="48" parent="12" name="deptno">
+      <Position>1</Position>
+      <Comment>部门编号</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="49" parent="12" name="dname">
+      <Position>2</Position>
+      <Comment>部门名称</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="50" parent="12" name="loc">
+      <Position>3</Position>
+      <Comment>部门位置</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="51" parent="13" name="deptno">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="52" parent="13" name="dname">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="53" parent="13" name="loc">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="54" parent="13" name="dt">
+      <Position>4</Position>
+      <DataType>string|12s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="55" parent="14" name="deptno">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="56" parent="14" name="dname">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="57" parent="14" name="loc">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="58" parent="14" name="year_month">
+      <Position>4</Position>
+      <DataType>string|12s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="59" parent="14" name="day">
+      <Position>5</Position>
+      <DataType>string|12s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="60" parent="15" name="empno">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="61" parent="15" name="ename">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="62" parent="15" name="job">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="63" parent="15" name="salary">
+      <Position>4</Position>
+      <DataType>decimal(16,2)|3s</DataType>
+    </column>
+    <column id="64" parent="15" name="deptno">
+      <Position>5</Position>
+      <DataType>int|4s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="65" parent="16" name="empno">
+      <Position>1</Position>
+      <Comment>员工编号</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="66" parent="16" name="ename">
+      <Position>2</Position>
+      <Comment>员工名称</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="67" parent="16" name="job">
+      <Position>3</Position>
+      <Comment>员工岗位</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="68" parent="16" name="sal">
+      <Position>4</Position>
+      <Comment>员工薪资</Comment>
+      <DataType>double|8s</DataType>
+    </column>
+    <column id="69" parent="16" name="deptno">
+      <Position>5</Position>
+      <Comment>部门编号</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="70" parent="17" name="name">
+      <Position>1</Position>
+      <Comment>姓名</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="71" parent="17" name="dept_id">
+      <Position>2</Position>
+      <Comment>部门id</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="72" parent="17" name="sex">
+      <Position>3</Position>
+      <Comment>性别</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="73" parent="18" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="74" parent="18" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="75" parent="18" name="salary">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="76" parent="18" name="managerid">
+      <Position>4</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="77" parent="19" name="loc">
+      <Position>1</Position>
+      <Comment>部门位置id</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="78" parent="19" name="loc_name">
+      <Position>2</Position>
+      <Comment>部门位置</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="79" parent="20" name="movie">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="80" parent="20" name="category">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="81" parent="21" name="personid">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="82" parent="21" name="firstname">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="83" parent="21" name="lastname">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="84" parent="22" name="name">
+      <Position>1</Position>
+      <Comment>姓名</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="85" parent="22" name="constellation">
+      <Position>2</Position>
+      <Comment>星座</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="86" parent="22" name="blood_tyoe">
+      <Position>3</Position>
+      <Comment>血型</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="87" parent="23" name="id">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="88" parent="23" name="category_id">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="89" parent="23" name="sales_sum">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="90" parent="24" name="s_id">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="91" parent="24" name="c_id">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="92" parent="24" name="s_score">
+      <Position>3</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="93" parent="25" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+      <Type>clustering</Type>
+      <Sorting>asc</Sorting>
+    </column>
+    <column id="94" parent="25" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="95" parent="26" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+      <Type>clustering</Type>
+      <Sorting>asc</Sorting>
+    </column>
+    <column id="96" parent="26" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="97" parent="26" name="dt">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="98" parent="27" name="s_id">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="99" parent="27" name="s_name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="100" parent="27" name="s_birth">
+      <Position>3</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="101" parent="27" name="s_sex">
+      <Position>4</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="102" parent="28" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="103" parent="28" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="104" parent="29" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="105" parent="29" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="106" parent="30" name="id">
+      <Position>1</Position>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="107" parent="30" name="name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="108" parent="31" name="id">
+      <Position>1</Position>
+      <Comment>学生ID</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="109" parent="31" name="name">
+      <Position>2</Position>
+      <Comment>学生姓名</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="110" parent="31" name="date">
+      <Position>3</Position>
+      <Comment>日期</Comment>
+      <DataType>string|12s</DataType>
+      <Type>partitioning</Type>
+    </column>
+    <column id="111" parent="32" name="t_id">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="112" parent="32" name="t_name">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="113" parent="33" name="id">
+      <Position>1</Position>
+      <Comment>id</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="114" parent="33" name="name">
+      <Position>2</Position>
+      <Comment>name</Comment>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="115" parent="34" name="name">
+      <Position>1</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="116" parent="34" name="friends">
+      <Position>2</Position>
+      <DataType>array&lt;string&gt;|2003s</DataType>
+    </column>
+    <column id="117" parent="34" name="children">
+      <Position>3</Position>
+      <DataType>map&lt;string,int&gt;|2000s</DataType>
+    </column>
+    <column id="118" parent="34" name="address">
+      <Position>4</Position>
+      <DataType>struct&lt;street:string,city:string,email:int&gt;|2002s</DataType>
+    </column>
+    <column id="119" parent="35" name="country_id">
+      <Position>1</Position>
+      <Comment>国家号</Comment>
+      <DataType>int|4s</DataType>
+    </column>
+    <column id="120" parent="35" name="weather_state">
+      <Position>2</Position>
+      <DataType>string|12s</DataType>
+    </column>
+    <column id="121" parent="35" name="day">
+      <Position>3</Position>
+      <DataType>date|91s</DataType>
+    </column>
+  </database-model>
+</dataSource>

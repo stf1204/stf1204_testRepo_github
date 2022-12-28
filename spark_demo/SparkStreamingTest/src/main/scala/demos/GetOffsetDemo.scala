@@ -2,10 +2,10 @@ package demos
 
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.streaming.dstream.InputDStream
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
-import org.apache.spark.streaming.kafka010.KafkaUtils
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.kafka010.{CanCommitOffsets, HasOffsetRanges, KafkaUtils, OffsetRange}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
@@ -17,11 +17,12 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
  * @Version: v1.0
  *
  */
-object AtMostOnceDemo {
+object GetOffsetDemo {
+
 
   def main(args: Array[String]): Unit = {
 
-    val streamingContext = new StreamingContext(master = "local[*]", appName = "AtMOstOnceDemo", batchDuration = Seconds(5))
+    val streamingContext = new StreamingContext(master = "local[*]", appName = "GetOffsetDemo", batchDuration = Seconds(5))
 
     /**
      * 所有Consumer参数都可以在ConsumerConfig中查看
@@ -32,9 +33,8 @@ object AtMostOnceDemo {
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "my_id",
       "auto.offset.reset" -> "latest",
-      "enable.auto.commit" -> "true",
-      // 设置自动提交的时间间隔，多久提交一次
-    "auto.commit.interval.ms" -> "500"
+      // 关闭自动提交
+      "enable.auto.commit" -> "false"
     )
 
     val topic1 = "topicA"
@@ -45,13 +45,26 @@ object AtMostOnceDemo {
       Subscribe[String, String](Array(topic1), kafka)
     )
 
-    ds1.map(record=>{
-      Thread.sleep(500)
-      if (record.value().equals("B")){
-        throw new RuntimeException("异常程序")
+    // Driver端声明
+    var ranges: Array[OffsetRange]=null
+    val ds2: DStream[ConsumerRecord[String, String]] = ds1.transform {
+      rdd => {
+        //偏移量
+        ranges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+        rdd
       }
+    }
+
+    ds2.map(record=>{
         record.value()
-    }).print(1000)
+    }).foreachRDD{
+      rdd=>{
+        rdd.foreach(word=>println(word))
+        //Driver端提交
+       ds1.asInstanceOf[CanCommitOffsets].commitAsync(ranges)
+      }
+    }
+
     streamingContext.start()
     streamingContext.awaitTermination()
   }

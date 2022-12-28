@@ -37,7 +37,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
  * 算子远比抽象原语丰富，有些方法只有算子有，如果要用此类方法，就需要进行类型转换，转为RDD调用该方法，然后再封装为DStream
  *
  */
-object TransformDemo {
+object Transform1Demo {
   def main(args: Array[String]): Unit = {
 
     val streamingContext = new StreamingContext(master = "local[*]", appName = "TransformTest", Seconds(10))

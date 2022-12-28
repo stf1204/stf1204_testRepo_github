@@ -73,6 +73,7 @@ object AtLeastOnceDemo {
 
     // Driver端声明
     var ranges: Array[OffsetRange]=null
+    // transform
     val ds2: DStream[ConsumerRecord[String, String]] = ds1.transform {
       rdd => {
         //Driver端运行
@@ -102,9 +103,6 @@ object AtLeastOnceDemo {
        ds1.asInstanceOf[CanCommitOffsets].commitAsync(ranges)
       }
     }
-
-
-
     streamingContext.start()
     streamingContext.awaitTermination()
   }

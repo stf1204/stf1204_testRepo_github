@@ -8,17 +8,7 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010.{CanCommitOffsets, HasOffsetRanges, KafkaUtils, OffsetRange}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
-/**
- * @ClassName: AtMostOnceDemo
- * @PACKAGE: demos
- * @Author: stf
- * @Date: 2022/12/27 - 23:00
- * @Description:
- * @Version: v1.0
- *
- */
 object GetOffsetDemo {
-
 
   def main(args: Array[String]): Unit = {
 
@@ -49,7 +39,7 @@ object GetOffsetDemo {
     var ranges: Array[OffsetRange]=null
     val ds2: DStream[ConsumerRecord[String, String]] = ds1.transform {
       rdd => {
-        //偏移量
+        //获取偏移量
         ranges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
         rdd
       }

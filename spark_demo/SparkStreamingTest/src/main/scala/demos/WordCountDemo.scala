@@ -9,70 +9,81 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
- * 编程入口(上下文Context)和编程模型：
+ * 编程入口(上下文Context) 和 编程模型：
  *
  * 编程入口：
  * SparkCore：SparkContext
  * SparkSql：SparkSession(内置SparkContext)
  * SparkStreaming：StreamingContext(内置SparkContext)
- *
+
  * 编程模型：
  * SparkCore：RDD
  * SparkSql：DataFrame & DataSet
  * SparkStreaming： DStream
- *
+
  * StreamingContext：编程的核心入口。用来从多种数据源创建DStream
- *
+
  * ① 创建StreamingContext
  * ②从StreamingContext中获取DStream
  * ③调用DStream的算子(高度抽象原语) 计算
- * ④ 以上三步都是懒加载
- * 启动APP
+ *    以上三步都是懒加载
+ * ④ 启动APP
  * StreamingContext.start()
  * 停止：
  * StreamingContext.stop()
- *
- * 流式计算启动后一定24小时不间断执行
- * StreamingContext.awaitTermination()等待发停止信号 或者 出现异常停止
+
+ * 流式计算启动后一定是 24小时不间断执行
+ * StreamingContext.awaitTermination() 等待发停止信号 或者 出现异常停止
  *
  */
 object WordCountDemo {
   def main(args: Array[String]): Unit = {
 
     /**
-     * batchDuration: Duration: 一个批次的持续时间。
-     * 多久为一批数据。
-     * Milliseconds(毫秒级)
-     * Seconds(秒级别)
-     * Minutes(分钟级别)
+     * batchDuration: Duration: Streaming核心思想是把无线数据集按照时间维度切分为一个批次的持续时间。
+     * 多久为一批数据？
+            Milliseconds(毫秒级)
+            Seconds(秒级别)
+            Minutes(分钟级别)
      */
 
 
     /*
+    使用SparkContext 创建StreamingContext 对象
+
     val sparkConf = new SparkConf().setAppName("WordCount").setMaster("local[*]")
     val sparkContext = new SparkContext(sparkConf)
+
     val streamingContext = new StreamingContext(sparkContext, Seconds(10))
-*/
-    //    val streamingContext = new StreamingContext(sparkConf, Seconds(10))
+    */
+
+    /*
+    使用SparkConf 创建StreamingContext 对象
+
+    val streamingContext = new StreamingContext(sparkConf, Seconds(10))
+    */
 
     //① 创建StreamingContext
     val streamingContext = new StreamingContext(master = "local[*]", appName = "WordCount", Seconds(10))
-    /*// 如果想要获取其中的SparkContext
-    val context: SparkContext = streamingContext.sparkContext*/
+    /*
+    如果想要获取其中的SparkContext
 
-    //②从StreamingContext中获取DStream
+    val context: SparkContext = streamingContext.sparkContext
+    */
+
+    //②从StreamingContext中获取 封装的每一时间段 DStream 对象
     //    参考数据源（hdfs，kafka，Tcp Port）
     //    fileStream 流式读取HDFS的文件
     //    socketStream 流式读取 固定主机：Port下发送的数据
 
 
     /**
-     * APP扮演的是消费者的角色，有消费者参数
-     * 必须有：
-     * bootstrap.servers
-     * key.deserializer
-     * value.deserializer
-     * group.id
+     * APP扮演的是消费者的角色，需要配置-消费者参数 kafkaParams
+     * 必写：
+     *    bootstrap.servers
+     *    key.deserializer
+     *    value.deserializer
+     *    group.id
      *
      *
      * auto.offset.reset 从哪个位置开始消费
@@ -81,7 +92,7 @@ object WordCountDemo {
      * none：从earliest 转为none，从已经提交的offset后 继续消费
      *
      * enable.auto.commit 是否允许consumer自动提交offset
-     * kafka 0.10版本以后，叫offset提交到_consumer_offset中
+     *  kafka 0.10版本以后，叫offset提交到_consumer_offset中
      */
     val kafkaParams = Map[String, Object](
       "bootstrap.servers" -> "hadoop102:9092,hadoop103:9092",
@@ -94,12 +105,13 @@ object WordCountDemo {
 
 
     /**
-     * 要消费的主题
+     * 要消费的主题，是一个数组类型。
      * 理论上 一个流可以消费多个主题
      * 但是实际使用时，一个流只写一个主题
      * 原因： 不同主题中保存的数据是不一样的，如果一个流消费了不同的主题，流中混杂了两种数据，在处理时，需要对数据进行类型判断，
-     * 判断是否是我们要处理的类型，编程逻辑难维护，杂乱。
-     * 如果需要消费两个主题，应该一个主题一个流，每个流中只保存一种类型的数据。
+             判断是否是我们要处理的类型，编程逻辑难维护，杂乱。
+
+    如果需要消费两个主题，应该一个主题一个流，每个流中只保存一种类型的数据。
      *
      */
     val topics = Array("topicA")
@@ -109,33 +121,29 @@ object WordCountDemo {
      * 如何从Kafka数据源中获取DStream
      * 全部是固定代码！！！！！！！
      *
-     *
      * def createDirectStream[K,V](
      * ssc: StreamingContext   程序入口
-     * locationStrategy:   位置策略：
+     * locationStrategy:   位置策略：     99%都是 PreferConsistent
      * kafka的broker和SparkApp Executor 的位置关系
-     * (是不是同一机器，同一机架，同一机房)
-     * 调度Task到Executor，有本地化策略(任务移动而不是数据移动)
-     *
+          (是不是同一机器，同一机架，同一机房)
+          调度Task到Executor，有计算本地化策略(任务移动而不是数据移动)
      * 如果当前消费的Topic的0号分区的leader位于102机器上，App恰好在02启动了Executor，那么这个Task就应该调度给这个Executor
      * 而不是交给其他的Executor。
-     *
-     * 99%都是 PreferConsistent
-     *
+
      * consumerStrategy:    消费策略：
-     * 独立消费者：明确指定要消费哪个主题的那个分区，从哪个offset开始消费
-     * Assign
-     *
-     * 非独立消费者：告诉你要消费哪个主题，由kafka自动给分配消费分区，读取之前保存的offset，从该位置开始消费
-     * Subscribe(99%)
-     *
-     *
+          独立消费者：明确指定要消费哪个主题的那个分区，从哪个offset开始消费
+          Assign
+
+          非独立消费者：告诉你要消费哪个主题，由kafka自动给分配消费分区，读取之前保存的offset，从该位置开始消费
+          Subscribe(99%)
+
      * ConsumerRecord[K，V]   从kafka消费到的一条数据，只获取V
-     *
-     * ProducerRecord[K，V]   V 封装data
-     * K 封装meta data 用于分区等
+
+     * ProducerRecord[K，V]
+          V用来 封装data
+          K 封装meta data 用于分区等
      * partition=0
-     * )
+      )
      */
     val ds: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream[String, String](
       streamingContext,
@@ -143,7 +151,7 @@ object WordCountDemo {
       Subscribe[String, String](topics, kafkaParams)
     )
 
-    val ds1 = ds.map(record => record.value())
+    val ds1: DStream[String] = ds.map(record => record.value())
 
     // ds2中的[String]是一个单词
     val ds2: DStream[String] = ds1.flatMap(line => line.split(" "))

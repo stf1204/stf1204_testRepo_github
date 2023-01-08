@@ -9,7 +9,7 @@ import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
- * 再SparkStreaming中有三个与时间操作有关的函数::
+ * 在SparkStreaming中有三个与时间操作有关的函数::
  *
  * batchDuration：Duration    将多长时间消费的数据封装为一个RDD
  * 一个批次的采集时间间隔
@@ -57,6 +57,7 @@ object WindowDemo {
       PreferConsistent,
       Subscribe[String, String](topics, kafka)
     )
+
     //    (String, Int):(word,n)
     val ds1: DStream[(String, Int)] = ds.flatMap(words => words.value().split(" "))
       .map((_, 1))

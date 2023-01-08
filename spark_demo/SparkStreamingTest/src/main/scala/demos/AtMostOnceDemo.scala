@@ -47,11 +47,13 @@ object AtMostOnceDemo {
 
     ds1.map(record=>{
       Thread.sleep(500)
+
       if (record.value().equals("B")){
         throw new RuntimeException("异常程序")
       }
         record.value()
     }).print(1000)
+
     streamingContext.start()
     streamingContext.awaitTermination()
   }

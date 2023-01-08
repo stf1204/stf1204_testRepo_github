@@ -8,17 +8,7 @@ import org.apache.spark.streaming.kafka010.KafkaUtils
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
-/**
- * @ClassName: JoinDemo
- * @PACKAGE: demos
- * @Author: stf
- * @Date: 2022/12/27 - 21:39
- * @Description:
- * @Version: v1.0
- *
- */
 object JoinDemo {
-
 
   /**
    * 消费多个主题，将多个主题的数据进行关联。
@@ -28,12 +18,9 @@ object JoinDemo {
    *
    * DS[K,V1] join DS[K,V2] = DS[K,(v1,v2)]
    *
-   *
    * -----------------------------------------------------------------
-   * Option: Some 有
-   *         none 没有
-   *
-   * @param args
+   * Option: 有  Some
+   *         没有 none
    */
   def main(args: Array[String]): Unit = {
 

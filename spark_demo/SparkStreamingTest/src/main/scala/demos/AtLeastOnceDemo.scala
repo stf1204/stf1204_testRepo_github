@@ -20,36 +20,28 @@ import org.apache.spark.streaming.{Seconds, StreamingContext}
 object AtLeastOnceDemo {
 
   /**
-   * OffsetRange(topic: "topicA",partition:2,range:[62->62])
-   *      一个OffsetRange代表消费的一个分区的一个主题，当前批次拉取到的数据的起始Offset和终止Offset
-   *      关注Until Offset
-   *
-   * ----------------------------------------------------------------------------
-   *      local[*] 本地模式以多线程模拟分布式运算。
-   *      Executor的线程统一命名为：Executor task launch work for task id
-   *      只要不是以以上的线程命名，都是Driver端
-   *
-   * ----------------------------------------------------------------------------
    * 如何区分代码在Driver端还是Executor端？
    *
-   *        ①：如果是DStream的普通(RDD也有，同名)算子 例如： map,filter等，都是在Executor端运行
+   *        ①：如果是DStream的普通(RDD也有的，同名)算子 例如： map,filter等，都是在Executor端运行
    *        ②：特殊算子：
    *                Transform 和foreachRDD
    *                只有RDD.算子（XXX） XXX是在Executor端运行，其他的都是在Driver端运行
-   *
    *  ----------------------------------------------------------------------------
+   *      local[*] 本地模式以多线程模拟分布式运算。
+   *      Executor的线程统一命名为：Executor task launch work for task id
+   *      只要不是以以上的线程命名，都是Driver端
+   * ----------------------------------------------------------------------------
+   *      OffsetRange(topic: "topicA", partition:2, range:[62->62])
+   *      一个OffsetRange代表消费一个主题的一个分区，当前批次拉取到的数据的起始Offset和终止Offset
+   *      关注Until Offset
+   * ----------------------------------------------------------------------------
    *  结论：
    *      偏移量offsets是在Driver端获取！！
-   *
-   * @param args
    */
   def main(args: Array[String]): Unit = {
 
     val streamingContext = new StreamingContext(master = "local[*]", appName = "AtMOstOnceDemo", batchDuration = Seconds(5))
 
-    /**
-     * 所有Consumer参数都可以在ConsumerConfig中查看
-     */
     val kafka = Map[String, Object](
       "bootstrap.servers" -> "hadoop102:9092,hadoop103:9092",
       "key.deserializer" -> classOf[StringDeserializer],
@@ -92,11 +84,14 @@ object AtLeastOnceDemo {
       if (record.value().equals("B")){
         throw new RuntimeException("异常程序")
       }
-        record.value()
+      // DStream 对象
+      record.value()
     }).foreachRDD{
+      // DS中每个RDD
       rdd=>{
         // Executor端运行
-        rdd.foreach(word=>println(Thread.currentThread().getName+":"+word))
+        rdd.foreach(word=>
+        println(Thread.currentThread().getName+":"+word))
         println("test2:"+Thread.currentThread().getName)
 
         //Driver端提交

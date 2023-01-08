@@ -14,19 +14,21 @@ import java.sql.{Connection, PreparedStatement, ResultSet}
 import scala.collection.mutable
 
 /**
-// begin from the offsets committed to the database
+
+//获取起始偏移量
+//begin from the offsets committed to the database
 val fromOffsets = selectOffsetsFromYourDatabase.map { resultSet =>
   new TopicPartition(resultSet.string("topic"), resultSet.int("partition")) -> resultSet.long("offset")
 }.toMap
 
-val stream = KafkaUtils.createDirectStream[String, String](
+val streamingContext = KafkaUtils.createDirectStream[String, String](
   streamingContext,
   PreferConsistent,
   Assign[String, String](fromOffsets.keys.toList, kafkaParams, fromOffsets)
 )
 
-stream.foreachRDD { rdd =>
-  val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+streamingContext.foreachRDD { rdd =>
+  val Ranges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
 
   val results = yourCalculation(rdd)
 
@@ -45,12 +47,12 @@ stream.foreachRDD { rdd =>
           ④在一个事务当中，把结果和偏移量写入数据库中
 
   以wordCount为例：
-                设计MYSQL中如何存数据，offsets
+      设计MYSQL中如何存数据，offsets
   数据：
       粒度：一个word是一行
       主键：word
 
-  offset： groupId，topic，partitionId。offset
+  offset： groupId，topic，partitionId ----> offset
       粒度：一个组消费一个主题的一个分区是一行
       主键：(groupId，topic，partitionId)
  */
@@ -59,9 +61,10 @@ object ExactlyOnceTransactionDemo {
   val groupId = "my_id"
   val topic = "topicA"
 
-  //查询mysql中已经提交的偏移量
+  //查询mysql中已经存储的偏移量
 def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]={
 
+  // 用来存储查询到的偏移量
   val offsets= new mutable.HashMap[TopicPartition, Long]()
   var connection: Connection = null
   var ps: PreparedStatement = null
@@ -75,17 +78,20 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
       |""".stripMargin
 
     try {
+      // 1 连接对象
       connection = JDBCUtil.getConnection()
-      // 预编译
+      // 2 预编译
       ps = connection.prepareStatement(sql)
-      // 填充占位符
+      // 3 填充占位符
       ps.setString(1,groupId)
       ps.setString(2,topic)
 
+      // 4 执行语句
       val resultSet: ResultSet = ps.executeQuery()
       while (resultSet.next()){
-        //String topic, int partition
-        offsets.put(new TopicPartition(topic,resultSet.getInt("partitionId")),resultSet.getLong("offset"))
+        // Map( TopicPartition(String topic, int partition) , Long offset )
+        offsets.put(new TopicPartition(topic , resultSet.getInt("partitionId")),
+          resultSet.getLong("offset"))
       }
     }catch {
       case e:Exception=>{
@@ -101,12 +107,14 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
         ps.close()
       }
     }
+
   //可变转不可变
   offsets.toMap
 }
 
-
+  // 在同一个事务中写出 result 和 ranges
   def WriteResultAndOffsetInCommonTransaction(result: Array[(String, Int)], ranges: Array[OffsetRange]): Unit = {
+
     //写单词
     // 累加，将数据库中相同的单词的数量和我现在要写入的数量累加，再写入
     val sql1 =
@@ -114,6 +122,7 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
         |insert into `wordcount` Values(?,?)
         |on duplicate key update count=count+values(count)
         |""".stripMargin
+
     //写偏移量
     val sql2 =
       """
@@ -132,16 +141,17 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
     var ps2: PreparedStatement = null
 
     try {
+      // 1、获取连接对象
       connection = JDBCUtil.getConnection()
 
-      //开启事务 取消事务的自动提交，改为手动提交
+      // 2、开启事务 取消事务的自动提交，改为手动提交
       connection.setAutoCommit(false)
 
-      // 预编译
+      // 3、预编译
       ps1 = connection.prepareStatement(sql1)
       ps2 = connection.prepareStatement(sql2)
 
-      // 每遍历一个单词，会生成一条sql
+      // 4、遍历数据数据，每遍历一个单词，生成一条sql，攒起来，统一执行
       for ((word, cnt) <- result) {
         ps1.setString(1,word)
         ps1.setLong(2,cnt)
@@ -150,18 +160,22 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
         ps1.addBatch()
       }
 
+      // 5、遍历ranges，每个offset，生成一条sql，攒起来，统一执行
       for (offsetRange <- ranges) {
         ps2.setString(1,groupId)
         ps2.setString(2,topic)
         ps2.setInt(3,offsetRange.partition)
         ps2.setLong(4,offsetRange.untilOffset)
+
+        // 攒起来
         ps2.addBatch()
       }
 
+      // 6、统一执行
       val res1: Array[Int] = ps1.executeBatch()
       val res2: Array[Int] = ps2.executeBatch()
 
-      //提交事务
+      // 7、执行完毕，提交事务
       connection.commit()
 
       println("数据写入："+res1.size)
@@ -169,14 +183,14 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
 
     }catch {
       case e:Exception=>{
-        // 回滚事务
+        //  出现错误，回滚事务
         connection.rollback()
         e.printStackTrace()
         throw new RuntimeException("写入失败！")
       }
     }finally {
-      // 关闭资源
 
+      // 关闭资源
       if(ps1!=null){
         ps1.close()
       }
@@ -190,10 +204,6 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
     }
   }
 
-
-  /*
-     * @param args
-     */
   def main(args: Array[String]): Unit = {
 
     // 第一步、①查询偏移量
@@ -201,9 +211,6 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
 
     val streamingContext = new StreamingContext(master = "local[*]", appName = "ExactlyOnceTransactionDemo", batchDuration = Seconds(5))
 
-    /**
-     * 所有Consumer参数都可以在ConsumerConfig中查看
-     */
     val kafka = Map[String, Object](
       "bootstrap.servers" -> "hadoop102:9092,hadoop103:9092",
       "key.deserializer" -> classOf[StringDeserializer],
@@ -225,15 +232,15 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
     ds1.foreachRDD(rdd=>{
 
       if (!rdd.isEmpty()){
-        //第三步、获取偏移量---driver
+        //第三步、获取每个RDD的偏移量---driver端
         val ranges: Array[OffsetRange] = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
 
         // 第四步、转换运算
         val result: Array[(String, Int)] = rdd.flatMap(record =>
-          record.value()
-            .split(" "))
+          record.value().split(" ") )
           .map((_, 1))
-          .reduceByKey(_ + _).collect()
+          .reduceByKey(_ + _)
+          .collect()
 
         // 第五步：将result和ranges在一个事务中写出
         WriteResultAndOffsetInCommonTransaction(result,ranges)

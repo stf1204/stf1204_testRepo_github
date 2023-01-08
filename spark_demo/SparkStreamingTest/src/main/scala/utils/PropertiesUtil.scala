@@ -2,9 +2,6 @@ package utils
 
 import java.util.ResourceBundle
 
-/**
- * Created by VULCAN on 2020/11/3
- */
 object PropertiesUtil {
 
     // 绑定配置文件
@@ -14,6 +11,4 @@ object PropertiesUtil {
     def getValue( key : String ): String = {
         resourceFile.getString(key)
     }
-
-
 }

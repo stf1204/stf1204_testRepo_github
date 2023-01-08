@@ -29,24 +29,21 @@ object WriteToRedisDemo {
    *          Key：wordCount
    *          Value：hash
    *                【field,value】
-   *                word, count
+   *                 word, count
    *  -----------------------------------------------------------------------
-   *  def foreachRDD(foreachFunc:(RDD[T])=>Unit):Unit
-   *  ds2.foreachRDD 和 transform类似，都是将DStream运算转换为RDD运算
+   *  def foreachRDD( foreachFunc:(RDD[T]) => Unit ):Unit
+   *  ds1.foreachRDD 和 transform类似，都是将DStream运算转换为RDD运算
    *
    *  foreachFunc：没有返回值的函数
    *  foreachRDD：没有返回值。
-   *
    *  ----------------------------------------------------------------------
    *
    *  以partition为单位的操作(可以减少创建Connection的次数)
    *
    *  读数据库：
-   *          RDD.mapPartition  有返回值
+   *          RDD.mapPartition        有返回值
    *  写数据库：
    *          RDD.foreachPartition    没有返回值
-   *
-   * @param args
    */
   def main(args: Array[String]): Unit = {
 
@@ -68,6 +65,7 @@ object WriteToRedisDemo {
       PreferConsistent,
       Subscribe[String, String](topics, kafka)
     )
+
     //    (String, Int):(word,n)
     val ds1: DStream[(String, Int)] = ds.flatMap(words => words.value().split(" "))
       .map((_, 1))
@@ -76,13 +74,16 @@ object WriteToRedisDemo {
 //    ds1.saveAsTextFiles("WordCount",".txt")
     ds1.cache()
     ds1.print(1000)
-//    ds2.foreachRDD 和 transform类似，都是将DStream运算转换为RDD运算
+
+//    ds1.foreachRDD 和 transform类似，都是将DStream运算转换为RDD运算
     ds1.foreachRDD{
-//      以partition为单位的操作(可以减少创建Connection的次数)
-      rdd=>rdd.foreachPartition{partition=>{
+      rdd=>
+        rdd.foreachPartition{partition=>{
+        // 以partition为单位的操作(可以减少创建Connection的次数)
         // 一个分区创建一个链接
         val jedis = new Jedis("hadoop102", 6379)
-        //使用链接获取每个分区内的数据
+
+        //遍历分区内数据，使用链接进行落地
        partition.foreach {
          case (word, cnt) => {
            val oldCnt = jedis.hget("wordCount", word)
@@ -98,6 +99,5 @@ object WriteToRedisDemo {
 
     streamingContext.start()
     streamingContext.awaitTermination()
-
   }
 }

@@ -5,9 +5,6 @@ import java.sql.Connection
 import com.alibaba.druid.pool.DruidDataSourceFactory
 import javax.sql.DataSource
 
-/**
- * Created by VULCAN on 2020/11/3
- */
 object JDBCUtil {
 
     // 创建连接池对象
@@ -17,6 +14,7 @@ object JDBCUtil {
     def init():DataSource = {
 
         val paramMap = new java.util.HashMap[String, String]()
+
         paramMap.put("driverClassName", PropertiesUtil.getValue("jdbc.driver.name"))
         paramMap.put("url", PropertiesUtil.getValue("jdbc.url"))
         paramMap.put("username", PropertiesUtil.getValue("jdbc.user"))

@@ -27,7 +27,6 @@ object CommitOffsetDemo {
    * 结论：
    *      只有初始DS才能提交偏移量！只有初始DS是DirectKafkaInputStream，
    *      只有DirectKafkaInputStream才能asInstanceOf[HasOffsetRanges]
-   * @param args
    */
   def main(args: Array[String]): Unit = {
 

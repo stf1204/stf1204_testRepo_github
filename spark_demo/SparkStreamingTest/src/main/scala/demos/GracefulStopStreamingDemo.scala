@@ -54,12 +54,13 @@ object TransformDemo{
 class MonitorStop(ssc: StreamingContext) extends Runnable{
 
   override def run(): Unit = {
-    // 获取HDFS文件系统
+    // 4.1 获取HDFS文件系统
     val fs: FileSystem = FileSystem.get(new URI("hdfs://hadoop102:8020"),new Configuration(),"atguigu")
 
+    // 4.2 死循环判断是否需要关闭
     while (true){
       Thread.sleep(5000)
-      // 获取/stopSpark路径是否存在
+      // 4.3 判断/stopSpark路径是否存在
       val result: Boolean = fs.exists(new Path("hdfs://hadoop102:8020/stopSpark"))
 
       if (result){

@@ -21,10 +21,9 @@ object GetOffset2Demo {
 
   /**
    * 结论：
-   *      只有初始DS才能调用transform和foreachRDD去获取偏移量
+   *      只有初始DS才能调用transform和foreachRDD去获取偏移量：
    *      因为只有初始的DS才是DirectKafkaInputStream，里面封装的是KafkaRDD
    *      只有KafkaRDD才能asInstanceOf[HasOffsetRanges]
-   * @param args
    */
   def main(args: Array[String]): Unit = {
 

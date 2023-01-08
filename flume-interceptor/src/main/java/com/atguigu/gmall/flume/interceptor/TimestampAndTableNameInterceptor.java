@@ -15,7 +15,6 @@ import java.util.Map;
 public class TimestampAndTableNameInterceptor implements Interceptor {
     @Override
     public void initialize() {
-
     }
 
     @Override

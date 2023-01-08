@@ -53,14 +53,6 @@ stream.foreachRDD { rdd =>
   offset： groupId，topic，partitionId。offset
       粒度：一个组消费一个主题的一个分区是一行
       主键：(groupId，topic，partitionId)
- *//**
- * @ClassName: ExactlyOnceTransactionDemo
- * @PACKAGE: demos
- * @Author: stf
- * @Date: 2022/12/28 - 15:53
- * @Description:
- * @Version: v1.0
- *
  */
 object ExactlyOnceTransactionDemo {
 
@@ -114,7 +106,7 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
 }
 
 
-  def WriteResultAndOffsetInCommonTransation(result: Array[(String, Int)], ranges: Array[OffsetRange]): Unit = {
+  def WriteResultAndOffsetInCommonTransaction(result: Array[(String, Int)], ranges: Array[OffsetRange]): Unit = {
     //写单词
     // 累加，将数据库中相同的单词的数量和我现在要写入的数量累加，再写入
     val sql1 =
@@ -244,7 +236,7 @@ def selectOffsetFromMysql(groupId:String,topic:String):Map[TopicPartition, Long]
           .reduceByKey(_ + _).collect()
 
         // 第五步：将result和ranges在一个事务中写出
-        WriteResultAndOffsetInCommonTransation(result,ranges)
+        WriteResultAndOffsetInCommonTransaction(result,ranges)
       }
 
     })

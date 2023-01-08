@@ -9,7 +9,7 @@
         <module name="spark01" />
         <module name="SparkStreamingTest" />
         <module name="redisTest" />
-        <module name="spark-01" />
+        <module name="sparkTest" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
